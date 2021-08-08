@@ -22,11 +22,16 @@ public class TransactionListService {
      */
     public List<TransactionListEntity> getAllTransactionList()
     {
-        List<TransactionListEntity> accountList = repository.findAll();
+        try {
+            List<TransactionListEntity> accountList = repository.findAll();
 
-        if(accountList.size() > 0) {
-            return accountList;
-        } else {
+            if (accountList.size() > 0) {
+                return accountList;
+            } else {
+                return new ArrayList<TransactionListEntity>();
+            }
+        }
+        catch (Exception e) {
             return new ArrayList<TransactionListEntity>();
         }
     }
@@ -35,70 +40,43 @@ public class TransactionListService {
      * Retrieves all the Transaction details for a given @param account Number
      * @return List of Transaction Details for the given account Number
      */
-    public List<TransactionListEntity> getTransactionListbyAccountNumber(Long id) throws RecordNotFoundException
-    {
-        List<Long> accountId = new ArrayList();
-        accountId.add(id);
-        Iterable<TransactionListEntity> transactionListIterable = repository.findAllById(accountId);
-        Iterator <TransactionListEntity> iterator = transactionListIterable.iterator();
-        List<TransactionListEntity> transactionList = new ArrayList();
-        while (iterator.hasNext())
-        {
-            transactionList.add(iterator.next());
-        }
+    public List<TransactionListEntity> getTransactionListbyAccountNumber(Long id) throws RecordNotFoundException {
+        try {
+            List<Long> accountId = new ArrayList();
+            accountId.add(id);
+            Iterable<TransactionListEntity> transactionListIterable = repository.findAllById(accountId);
+            Iterator<TransactionListEntity> iterator = transactionListIterable.iterator();
+            List<TransactionListEntity> transactionList = new ArrayList();
+            while (iterator.hasNext()) {
+                transactionList.add(iterator.next());
+            }
 
-        if(transactionList.size() > 0) {
-            return transactionList;
-        } else {
+            if (transactionList.size() > 0) {
+                return transactionList;
+            } else {
+                return new ArrayList<TransactionListEntity>();
+            }
+        }
+        catch (Exception e) {
             return new ArrayList<TransactionListEntity>();
         }
     }
 
-
-
-    /*
-     public EmployeeEntity getEmployeeById(Long id) throws RecordNotFoundException
-    {
-        Optional<EmployeeEntity> employee = repository.findById(id);
-
-        if(employee.isPresent()) {
-            return employee.get();
-        } else {
-            throw new RecordNotFoundException("No employee record exist for given id");
+    public int getTransactionListCountByAccountNumber(String account_number) throws RecordNotFoundException {
+        try {
+            Long id = Long.valueOf(account_number);
+            List<Long> accountId = new ArrayList();
+            accountId.add(id);
+            Iterable<TransactionListEntity> transactionListIterable = repository.findAllById(accountId);
+            Iterator<TransactionListEntity> iterator = transactionListIterable.iterator();
+            List<TransactionListEntity> transactionList = new ArrayList();
+            while (iterator.hasNext()) {
+                transactionList.add(iterator.next());
+            }
+            return transactionList.size();
+        }
+        catch (Exception e) {
+            return 0;
         }
     }
-
-
-   public EmployeeEntity createOrUpdateEmployee(EmployeeEntity entity) throws RecordNotFoundException
-    {
-        Optional<EmployeeEntity> employee = repository.findById(entity.getId());
-         
-        if(employee.isPresent())
-        {
-            EmployeeEntity newEntity = employee.get();
-            newEntity.setEmail(entity.getEmail());
-            newEntity.setFirstName(entity.getFirstName());
-            newEntity.setLastName(entity.getLastName());
- 
-            newEntity = repository.save(newEntity);
-             
-            return newEntity;
-        } else {
-            entity = repository.save(entity);
-             
-            return entity;
-        }
-    }
-     
-    public void deleteEmployeeById(Long id) throws RecordNotFoundException
-    {
-        Optional<EmployeeEntity> employee = repository.findById(id);
-         
-        if(employee.isPresent())
-        {
-            repository.deleteById(id);
-        } else {
-            throw new RecordNotFoundException("No employee record exist for given id");
-        }
-    }*/
 }

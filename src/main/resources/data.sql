@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS account_list;
+DROP TABLE IF EXISTS transaction_list;
 
 CREATE TABLE account_list (
   customer_id INTEGER NOT NULL,
